@@ -5,7 +5,7 @@ self.addEventListener("install", event => {
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll([
         "./",
-        "./DASHBOARD_MOSHI AWAN.html",
+        "./index.html",
         "./Upload.json"
       ]);
     })
@@ -17,4 +17,5 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     fetch(event.request).catch(() => caches.match(event.request))
   );
+
 });
