@@ -173,7 +173,7 @@ function uploadImage(){
   fetch(deviceIP + "/upload", {
     method: "POST",
     body: formData,
-    redirect: "manual",        // penting buat firmware yang redirect
+    redirect: "follow",        // penting buat firmware yang redirect
     cache: "no-cache",
     credentials: "omit"
   })
@@ -188,4 +188,5 @@ function uploadImage(){
 
 </script>
 </html>
+
 
