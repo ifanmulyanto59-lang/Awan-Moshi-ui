@@ -1,7 +1,7 @@
 {
   "name": "Awan Control Os",
   "short_name": "AwanOs",
-  "start_url": "DASHBOARD_MOSHI AWAN.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f5f1ea",
   "theme_color": "#f5f1ea",
@@ -18,4 +18,5 @@
       "type": "image/png"
     }
   ]
+
 }
