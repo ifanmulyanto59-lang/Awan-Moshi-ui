@@ -91,14 +91,23 @@ input[type=range]{
 <div class="card">
 <h3>🖼 Upload Custom Image</h3>
 
-<input type="file" id="fileInput" accept="image/*">
-<br><br>
-<button onclick="uploadImage()">Upload</button>
+<form id="uploadForm"
+      method="POST"
+      action="http://192.168.4.1/upload"
+      enctype="multipart/form-data"
+      target="hiddenFrame">
+
+  <input type="file" name="file" accept="image/*">
+  <br><br>
+  <button type="submit">Upload</button>
+
+</form>
+
+<iframe name="hiddenFrame" style="display:none;"></iframe>
 
 <div class="status" id="uploadStatus">
-Foto akan langsung tampil di Awan
+Foto akan langsung tampil di Moshi
 </div>
-
 </div>
 
 </div>
@@ -132,6 +141,14 @@ function syncTime(){
 
   status.innerText = "Synced 🕒";
 }
+
+document.getElementById("uploadForm").addEventListener("submit", function(){
+  document.getElementById("uploadStatus").innerText = "Uploading...";
+  
+  setTimeout(() => {
+    document.getElementById("uploadStatus").innerText = "Upload selesai ✨";
+  }, 2000);
+});
 
 function uploadImage(){
   const fileInput = document.getElementById("fileInput");
