@@ -3,14 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Awan Moshi Os</title>
+<title>Awan Moshi OS</title>
 
 <style>
 :root{
   --bg:#f5f1ea;
   --card:#ffffff;
   --accent:#111111;
-  --soft:#e8e2d9;
 }
 
 *{
@@ -28,7 +27,6 @@ body{
 
 h1{
   margin-bottom:30px;
-  font-weight:600;
 }
 
 .container{
@@ -42,11 +40,6 @@ h1{
   border-radius:22px;
   margin-bottom:20px;
   box-shadow:0 10px 25px rgba(0,0,0,0.08);
-  transition:0.25s ease;
-}
-
-.card:hover{
-  transform:translateY(-4px);
 }
 
 button{
@@ -57,20 +50,10 @@ button{
   border-radius:15px;
   font-weight:600;
   cursor:pointer;
-  transition:0.2s ease;
-}
-
-button:hover{
-  background:#333;
 }
 
 input[type=range]{
   width:100%;
-  margin-top:10px;
-  accent-color:#111;
-}
-
-input[type=file]{
   margin-top:10px;
 }
 
@@ -79,58 +62,51 @@ input[type=file]{
   font-size:14px;
   opacity:0.7;
 }
-
-.cat{
-  font-size:28px;
-  margin-bottom:10px;
-  animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%{transform:translateY(0px);}
-  50%{transform:translateY(-5px);}
-  100%{transform:translateY(0px);}
-}
-
-.footer{
-  font-size:12px;
-  opacity:0.5;
-  margin-top:30px;
-}
 </style>
 </head>
 
 <body>
 
-<h1>🐾 Awan Moshi Os</h1>
+<h1>🐾 Awan Moshi OS</h1>
 
 <div class="container">
+
+<!-- Brightness -->
 <div class="card">
-<div class="smile">😋</div>
 <h3>Brightness</h3>
 <input type="range" min="0" max="255" id="brightnessSlider">
+<br><br>
 <button onclick="setBrightness()">Set</button>
 <div class="status" id="brightStatus"></div>
 </div>
 
+<!-- Sync Time -->
 <div class="card">
 <h3>Sync Time</h3>
 <button onclick="syncTime()">Sync</button>
 <div class="status" id="timeStatus"></div>
 </div>
 
+<!-- Upload Image -->
 <div class="card">
-<h3>Upload Image</h3>
-<input type="file" id="fileInput">
-<br>
-<button onclick="uploadImage()">Upload</button>
-<div class="status" id="uploadStatus"></div>
+<h3>🖼 Upload Custom Image</h3>
+
+<form method="POST"
+      action="http://192.168.4.1/upload"
+      enctype="multipart/form-data">
+
+  <input type="file" name="file" accept="image/*">
+  <br><br>
+  <button type="submit">Upload</button>
+
+</form>
+
+<div class="status">
+Foto akan langsung tampil di Moshi
 </div>
 
 </div>
 
-<div class="footer">
-Awan Local Panel ✨
 </div>
 
 <script>
@@ -139,52 +115,31 @@ const deviceIP = "http://192.168.4.1";
 
 function setBrightness(){
   const value = document.getElementById("brightnessSlider").value;
-  document.getElementById("brightStatus").innerText="Sending...";
-  
-  fetch(`${deviceIP}/brightness?val=${value}`);
-  
-  document.getElementById("brightStatus").innerText="Done ✨";
+  const status = document.getElementById("brightStatus");
+
+  status.innerText = "Sending...";
+
+  fetch(deviceIP + "/brightness?val=" + value, {
+    mode: "no-cors"
+  });
+
+  status.innerText = "Done ✨";
 }
 
 function syncTime(){
   const epoch = Math.floor(Date.now()/1000);
-  document.getElementById("timeStatus").innerText="Syncing...";
-  
-  fetch(`${deviceIP}/settime?epoch=${epoch}`);
-  
-  document.getElementById("timeStatus").innerText="Synced 🕒";
-}
+  const status = document.getElementById("timeStatus");
 
-function uploadImage(){
-  const fileInput = document.getElementById("fileInput");
-  const status = document.getElementById("uploadStatus");
-  const file = fileInput.files[0];
+  status.innerText = "Syncing...";
 
-  if(!file){
-    alert("Pilih file dulu bro 🐱");
-    return;
-  }
-
-  status.innerText = "Uploading...";
-
-  const formData = new FormData();
-  formData.append("file", file);
-
-  fetch(deviceIP + "/upload", {
-    method: "POST",
-    body: formData,
-    redirect: "follow",        // penting buat firmware yang redirect
-    cache: "no-cache",
-    credentials: "omit"
-  })
-  .then(() => {
-    status.innerText = "Upload terkirim ✨ (cek Moshi 3x tap)";
-  })
-  .catch((err) => {
-    console.log(err);
-    status.innerText = "Upload gagal ⚠️";
+  fetch(deviceIP + "/settime?epoch=" + epoch, {
+    mode: "no-cors"
   });
+
+  status.innerText = "Synced 🕒";
 }
 
 </script>
+
+</body>
 </html>
